@@ -1,0 +1,89 @@
+train n=2838, test n=715, stress rate train=0.524
+                  count      mean
+subreddit                        
+almosthomeless       80  0.587500
+anxiety             503  0.658052
+assistance          289  0.363322
+domesticviolence    316  0.639241
+food_pantry          37  0.378378
+homeless            168  0.375000
+ptsd                584  0.568493
+relationships       552  0.447464
+stress               64  0.546875
+survivorsofabuse    245  0.457143 
+
+=== H1: Spearman rho between feature and stress label (Bonferroni-corrected) ===
+self_focus   rho=+0.383***  p_corrected=2.28e-123
+neg_emotion  rho=+0.314***  p_corrected=4.142e-81
+isolation    rho=+0.071***  p_corrected=0.0001692
+pos_emotion  rho=-0.104***  p_corrected=3.618e-09
+we_words     rho=-0.139***  p_corrected=6.4e-16
+absolutist   rho=+0.078***  p_corrected=2.607e-05
+ttr100       rho=-0.088***  p_corrected=1.298e-06
+log_len      rho=+0.094***  p_corrected=1.444e-07
+
+Group means (stress=1 vs 0):
+ label            0       1
+self_focus   7.304  10.863
+neg_emotion  0.279   0.940
+isolation    0.088   0.138
+pos_emotion  0.560   0.350
+we_words     0.986   0.559
+absolutist   0.497   0.609
+ttr100       0.754   0.742
+log_len      4.348   4.424 
+
+=== 5-fold CV AUC on training set ===
+majority baseline            AUC=0.500 +/- 0.000
+core3 only                   AUC=0.764 +/- 0.019
+non-core features only       AUC=0.621 +/- 0.019
+all hand-crafted features    AUC=0.779 +/- 0.016
+tf-idf n-grams               AUC=0.819 +/- 0.013
+tf-idf + features            AUC=0.832 +/- 0.016
+
+=== Held-out test set (n=715); majority-class rate=0.516 ===
+majority baseline            acc=0.516 AUC=0.500 F1=0.681  binom p(vs majority)=0.5151, p(vs 50%)=0.2053
+core3 only                   acc=0.676 AUC=0.731 F1=0.698  binom p(vs majority)=4.082e-18, p(vs 50%)=1.726e-21
+non-core features only       acc=0.599 AUC=0.623 F1=0.670  binom p(vs majority)=5.549e-06, p(vs 50%)=7.521e-08
+all hand-crafted features    acc=0.680 AUC=0.746 F1=0.709  binom p(vs majority)=5.247e-19, p(vs 50%)=1.833e-22
+tf-idf n-grams               acc=0.710 AUC=0.802 F1=0.739  binom p(vs majority)=2.605e-26, p(vs 50%)=2.239e-30
+tf-idf + features            acc=0.712 AUC=0.811 F1=0.736  binom p(vs majority)=1.124e-26, p(vs 50%)=9.064e-31
+
+=== H4: paired permutation tests on test-set accuracy ===
+tf-idf + features vs tf-idf n-grams: diff in accuracy=+0.001, p=1
+all hand-crafted features vs non-core features only: diff in accuracy=+0.081, p=9.999e-05
+all hand-crafted features vs tf-idf n-grams: diff in accuracy=-0.031, p=0.1447
+
+=== Standardized logistic-regression coefficients (log-odds per 1 SD) ===
+              coef  odds_ratio
+pos_emotion -0.260       0.771
+we_words    -0.058       0.943
+absolutist   0.079       1.082
+isolation    0.094       1.099
+ttr100       0.155       1.168
+log_len      0.372       1.450
+neg_emotion  0.666       1.947
+self_focus   0.879       2.409
+
+=== Test AUC by subreddit (all hand-crafted features) ===
+almosthomeless       n= 19 AUC=0.726
+anxiety              n=147 AUC=0.772
+assistance           n= 66 AUC=0.760
+domesticviolence     n= 72 AUC=0.843
+food_pantry          n=  6 AUC=0.667
+homeless             n= 52 AUC=0.706
+ptsd                 n=127 AUC=0.720
+relationships        n=142 AUC=0.651
+stress               n= 14 AUC=0.725
+survivorsofabuse     n= 70 AUC=0.710
+
+PCA explained variance: [0.204 0.18 ]
+              PC1   PC2
+self_focus  -0.30  0.57
+neg_emotion -0.11  0.43
+isolation   -0.04  0.17
+pos_emotion  0.13  0.03
+we_words     0.17 -0.50
+absolutist  -0.02  0.26
+ttr100       0.68  0.17
+log_len     -0.62 -0.32
